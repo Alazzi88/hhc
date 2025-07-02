@@ -93,15 +93,7 @@ export default function Welcome() {
       {/* Header */}
       <div className="relative bg-white-800 pb-32">
         {/* زر دخول الإدمن ثابت في أعلى اليسار */}
-        <div className="absolute top-6 left-6 sm:left-auto sm:right-6 z-20">
-          {/* <Link
-            href="/admin/login"
-            className="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded-xl font-bold shadow transition"
-          >
-            دخول الإدمن
-          </Link> */}
-        </div>
-
+  
         <div className="absolute inset-0">
           <img
             alt="logo"
