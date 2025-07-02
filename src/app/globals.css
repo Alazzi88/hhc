@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+
+
+body {
+  font-family: "Almarai", sans-serif;
+  line-height: 1.6;
+  direction: rtl;
+  text-align: right;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Almarai", sans-serif;
+  font-weight: 700; /* استخدم الوزن المناسب */
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 14px; 
+  color: #0ea5e9;  
+}
