@@ -90,7 +90,7 @@ const supportLinks: SupportLink[] = [
   },
 ];
 
-export default function WelcomeCarousel() {
+export default function Welcome() {
   return (
     <div dir="rtl" className="bg-white">
       {/* Header */}
