@@ -1,18 +1,21 @@
 "use client";
 
 import React from "react";
-
-// استيراد مكونات وإضافات Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay, Navigation } from "swiper/modules";
 
-// استيراد أنماط Swiper الأساسية وأنماط الـ Pagination والـ Navigation
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-// بيانات البطاقات
-const supportLinks = [
+type SupportLink = {
+  name: string;
+  href: string;
+  description: string;
+  image: string;
+};
+
+const supportLinks: SupportLink[] = [
   {
     name: "تغذية الرجل",
     href: "/man",
@@ -87,25 +90,22 @@ const supportLinks = [
   },
 ];
 
-export default function Welcome() {
+export default function WelcomeCarousel() {
   return (
     <div dir="rtl" className="bg-white">
       {/* Header */}
       <div className="relative bg-white-800 pb-32">
-        {/* زر دخول الإدمن ثابت في أعلى اليسار */}
-  
         <div className="absolute inset-0">
           <img
             alt="logo"
             src="/img/logo.webp"
-            className="size-full object-contain"
+            className="w-full h-full object-contain"
           />
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-gray-800 mix-blend-multiply"
           />
         </div>
-
         <div className="relative mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 flex flex-col sm:flex-row justify-between items-center">
           <h1 className="text-4xl font-normal tracking-tight text-sky-500 md:text-5xl lg:text-6xl animate-slide-right mb-4 sm:mb-0 sm:mr-4">
             تجمع عسير الصحي
@@ -116,7 +116,7 @@ export default function Welcome() {
         </div>
       </div>
 
-      {/* قسم السلايدر (Carousel) */}
+      {/* سلايدر الكروت */}
       <section
         aria-labelledby="contact-heading"
         className="relative z-10 mx-auto mb-1 -mt-32 max-w-7xl px-6 pb-2 lg:px-8"
@@ -125,7 +125,6 @@ export default function Welcome() {
           Contact us
         </h2>
 
-        {/* استخدام Swiper لإنشاء Carousel */}
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           navigation={true}
@@ -149,7 +148,6 @@ export default function Welcome() {
                 className="flex flex-col rounded-3xl mb-12 overflow-hidden shadow-xl transition transform hover:shadow-2xl hover:-translate-y-2 animate-slide-left bg-white"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                {/* الصورة أعلى البطاقة */}
                 <div className="relative">
                   <img
                     src={link.image}
@@ -157,8 +155,6 @@ export default function Welcome() {
                     className="w-full h-40 object-contain"
                   />
                 </div>
-
-                {/* المحتوى النصي */}
                 <div className="p-4 flex flex-col items-center justify-center text-center">
                   <h3 className="text-xl font-semibold text-sky-500">
                     {link.name}
@@ -167,8 +163,6 @@ export default function Welcome() {
                     {link.description}
                   </p>
                 </div>
-
-                {/* الزر في الأسفل */}
                 <div className="bg-gray-50 px-4 py-3 text-center">
                   <a
                     href={link.href}
@@ -182,7 +176,7 @@ export default function Welcome() {
           ))}
         </Swiper>
 
-        {/* لتخصيص لون الأسهم (Navigation) و حجمها، وكذلك لون الـ Pagination */}
+        {/* تخصيص الأسهم والدوائر */}
         <style jsx global>{`
           .swiper-button-next::after,
           .swiper-button-prev::after {
