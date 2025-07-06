@@ -107,26 +107,26 @@ export default function CaloriesCalculator() {
   };
 
   // إضافة للأكلات المختارة
-  const handleAdd = () => {
-    let found = FOOD_DATA.find(f => f.name === inputName);
-    let cal = 0;
-    if (found) {
-      // نضرب السعرات بالكمية (مثال السعرات لكل 100جم)
-      cal = Math.round((inputAmount / 100) * found.calories);
-    } else if (manualCalories) {
-      cal = Math.round(Number(manualCalories));
-    } else {
-      return;
-    }
-    setEntries([
-      ...entries,
-      { name: inputName, amount: inputAmount, calories: cal }
-    ]);
-    setInputName('');
-    setInputAmount(100);
-    setManualCalories('');
-    setSearchResults([]);
-  };
+ // إضافة للأكلات المختارة
+const handleAdd = () => {
+  const found = FOOD_DATA.find(f => f.name === inputName);
+  let cal = 0;
+  if (found) {
+    cal = Math.round((inputAmount / 100) * found.calories);
+  } else if (manualCalories) {
+    cal = Math.round(Number(manualCalories));
+  } else {
+    return;
+  }
+  setEntries([
+    ...entries,
+    { name: inputName, amount: inputAmount, calories: cal }
+  ]);
+  setInputName('');
+  setInputAmount(100);
+  setManualCalories('');
+  setSearchResults([]);
+};
 
   const totalCalories = entries.reduce((acc, item) => acc + item.calories, 0);
 

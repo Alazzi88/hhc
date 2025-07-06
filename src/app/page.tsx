@@ -16,7 +16,6 @@ export default function Main() {
       <CombinedPage/>
       <CaloriesCalculator />
       <FoodPortions />
-  
       <Card />
       <StrategyPage />
       <Manager />
