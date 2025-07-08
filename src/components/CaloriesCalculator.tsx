@@ -77,13 +77,12 @@ const FOOD_DATA: FoodItem[] = [
   { name: "بيبسي/مشروبات غازية", calories: 110 }, // للكوب
   // أضف مزيد من الأصناف حسب الدليل
 ];
-
-
 type Entry = {
   name: string;
   amount: number; // كمية (جم أو قطعة)
   calories: number; // السعرات الإجمالية لهذا الإدخال
 };
+
 
 export default function CaloriesCalculator() {
   const [inputName, setInputName] = useState('');
@@ -92,7 +91,6 @@ export default function CaloriesCalculator() {
   const [manualCalories, setManualCalories] = useState<number | ''>('');
   const [searchResults, setSearchResults] = useState<FoodItem[]>([]);
 
-  // بحث سريع عن الأكلة
   const handleSearch = (text: string) => {
     setInputName(text);
     if (text.trim().length === 0) {
@@ -106,116 +104,139 @@ export default function CaloriesCalculator() {
     );
   };
 
-  // إضافة للأكلات المختارة
- // إضافة للأكلات المختارة
-const handleAdd = () => {
-  const found = FOOD_DATA.find(f => f.name === inputName);
-  let cal = 0;
-  if (found) {
-    cal = Math.round((inputAmount / 100) * found.calories);
-  } else if (manualCalories) {
-    cal = Math.round(Number(manualCalories));
-  } else {
-    return;
-  }
-  setEntries([
-    ...entries,
-    { name: inputName, amount: inputAmount, calories: cal }
-  ]);
-  setInputName('');
-  setInputAmount(100);
-  setManualCalories('');
-  setSearchResults([]);
-};
+  const handleAdd = () => {
+    const found = FOOD_DATA.find(f => f.name === inputName);
+    let cal = 0;
+    if (found) {
+      cal = Math.round((inputAmount / 100) * found.calories);
+    } else if (manualCalories) {
+      cal = Math.round(Number(manualCalories));
+    } else {
+      return;
+    }
+    setEntries([
+      ...entries,
+      { name: inputName, amount: inputAmount, calories: cal }
+    ]);
+    setInputName('');
+    setInputAmount(100);
+    setManualCalories('');
+    setSearchResults([]);
+  };
+
+  // دالة حذف صف بناءً على الفهرس
+  const handleDelete = (index: number) => {
+    setEntries(entries => entries.filter((_, i) => i !== index));
+  };
 
   const totalCalories = entries.reduce((acc, item) => acc + item.calories, 0);
 
   return (
-    <div className="max-w-xl mx-auto mt-10 bg-white shadow-lg rounded-2xl p-6 space-y-6">
-      <h2 className="text-2xl font-bold mb-4 text-center">حاسبة السعرات الحرارية للأطباق</h2>
+    <div className="w-full flex justify-center p-2">
+      <div className="w-full sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-[600px] mt-8 bg-white shadow-xl rounded-2xl p-4 sm:p-8 space-y-6">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center text-sky-600">حاسبة السعرات الحرارية للأطباق</h2>
 
-      <div className="grid gap-4">
-        <input
-          type="text"
-          placeholder="اسم الأكلة"
-          value={inputName}
-          onChange={e => handleSearch(e.target.value)}
-          className="border p-2 rounded w-full"
-          list="foods"
-        />
-        {searchResults.length > 0 && (
-          <div className="bg-gray-100 rounded p-2">
-            <div className="font-semibold mb-1 text-gray-700 text-sm">نتائج البحث:</div>
-            <ul>
-              {searchResults.map(item => (
-                <li
-                  key={item.name}
-                  className="cursor-pointer hover:bg-gray-200 p-1 rounded"
-                  onClick={() => {
-                    setInputName(item.name);
-                    setManualCalories('');
-                    setSearchResults([]);
-                  }}
-                >
-                  {item.name} ({item.calories} سعرة لكل 100 جم)
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <div className="flex gap-2">
+        <div className="grid gap-3 sm:gap-4">
           <input
-            type="number"
-            placeholder="الكمية (جم أو قطعة)"
-            value={inputAmount}
-            min={1}
-            className="border p-2 rounded flex-1"
-            onChange={e => setInputAmount(Number(e.target.value))}
+            type="text"
+            placeholder="اسم الأكلة"
+            value={inputName}
+            onChange={e => handleSearch(e.target.value)}
+            className="border p-2 rounded-lg w-full focus:ring-2 focus:ring-sky-400 transition"
+            list="foods"
           />
-          {!FOOD_DATA.some(f => f.name === inputName) && (
+          {searchResults.length > 0 && (
+            <div className="bg-gray-100 rounded-lg p-2">
+              <div className="font-semibold mb-1 text-gray-700 text-sm">نتائج البحث:</div>
+              <ul>
+                {searchResults.map(item => (
+                  <li
+                    key={item.name}
+                    className="cursor-pointer hover:bg-gray-200 p-1 rounded"
+                    onClick={() => {
+                      setInputName(item.name);
+                      setManualCalories('');
+                      setSearchResults([]);
+                    }}
+                  >
+                    {item.name} ({item.calories} سعرة لكل 100 جم)
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="number"
-              placeholder="السعرات (يدويًا)"
-              value={manualCalories}
+              placeholder="الكمية (جم أو قطعة)"
+              value={inputAmount}
               min={1}
-              className="border p-2 rounded flex-1"
-              onChange={e => setManualCalories(e.target.value === '' ? '' : Number(e.target.value))}
+              className="border p-2 rounded-lg flex-1 focus:ring-2 focus:ring-sky-400 transition"
+              onChange={e => setInputAmount(Number(e.target.value))}
             />
-          )}
-          <button
-            className="bg-green-600 text-white rounded px-4 py-2"
-            onClick={handleAdd}
-          >
-            إضافة
-          </button>
+            {!FOOD_DATA.some(f => f.name === inputName) && (
+              <input
+                type="number"
+                placeholder="السعرات (يدويًا)"
+                value={manualCalories}
+                min={1}
+                className="border p-2 rounded-lg flex-1 focus:ring-2 focus:ring-sky-400 transition"
+                onChange={e => setManualCalories(e.target.value === '' ? '' : Number(e.target.value))}
+              />
+            )}
+            <button
+              className="bg-sky-600 text-white rounded-lg px-4 py-2 font-semibold hover:bg-sky-700 transition"
+              onClick={handleAdd}
+            >
+              إضافة
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h3 className="font-semibold mb-2 text-lg">الأكلات المُضافة:</h3>
-        <table className="w-full border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2">الأكلة</th>
-              <th className="p-2">الكمية</th>
-              <th className="p-2">السعرات</th>
-            </tr>
-          </thead>
-          <tbody>
-            {entries.map((item, i) => (
-              <tr key={i}>
-                <td className="p-2">{item.name}</td>
-                <td className="p-2">{item.amount}</td>
-                <td className="p-2">{item.calories}</td>
+        <div className="overflow-x-auto">
+          <h3 className="font-semibold mb-2 text-lg">الأكلات المُضافة:</h3>
+          <table className="w-full border text-center rounded-xl overflow-hidden text-base">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="p-2">الأكلة</th>
+                <th className="p-2">الكمية</th>
+                <th className="p-2">السعرات</th>
+                <th className="p-2">حذف</th>
               </tr>
-            ))}
-            <tr className="bg-green-100 font-bold">
-              <td className="p-2" colSpan={2}>المجموع</td>
-              <td className="p-2">{totalCalories}</td>
-            </tr>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {entries.map((item, i) => (
+                <tr key={i} className="hover:bg-gray-50">
+                  <td className="p-2">{item.name}</td>
+                  <td className="p-2">{item.amount}</td>
+                  <td className="p-2">{item.calories}</td>
+                  <td className="p-2">
+                    <button
+                      className="bg-red-500 hover:bg-red-600 text-white rounded px-2 py-1 text-xs"
+                      onClick={() => handleDelete(i)}
+                    >
+                      حذف
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              <tr className="bg-sky-100 font-bold">
+                <td className="p-2" colSpan={3}>المجموع</td>
+                <td className="p-2">{totalCalories}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
